@@ -23,7 +23,9 @@
 const bcrypt = require("bcrypt");
 const password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
 
-console.log(password);
+const root = process.env.ROOT_PATH ? process.env.ROOT_PATH:"/";
+const editorTheme = process.env.EDITOR_THEME;
+const codeEditorTheme = process.env.CODE_EDITOR_THEME;
 
 module.exports = {
 
@@ -169,7 +171,7 @@ module.exports = {
      * The following property can be used to specify a different root path.
      * If set to false, this is disabled.
      */
-    //httpAdminRoot: '/admin',
+    httpAdminRoot: root,
 
     /** The following property can be used to add a custom middleware function
      * in front of all admin http routes. For example, to set custom http
@@ -332,7 +334,7 @@ module.exports = {
          * See https://github.com/node-red-contrib-themes/theme-collection for
          * a collection of themes to chose from.
          */
-        //theme: "",
+        theme: editorTheme,
 
         /** To disable the 'Welcome to Node-RED' tour that is displayed the first
          * time you access the editor for each release of Node-RED, set this to false
@@ -366,7 +368,7 @@ module.exports = {
             /** Select the text editor component used by the editor.
              * Defaults to "ace", but can be set to "ace" or "monaco"
              */
-            lib: "ace",
+            lib: "monaco",
             options: {
                 /** The follow options only apply if the editor is set to "monaco"
                  *
@@ -374,7 +376,7 @@ module.exports = {
                  * packages/node_modules/@node-red/editor-client/src/vendor/monaco/dist/theme
                  * e.g. "tomorrow-night", "upstream-sunburst", "github", "my-theme"
                  */
-                theme: "vs",
+                theme: codeEditorTheme,
                 /** other overrides can be set e.g. fontSize, fontFamily, fontLigatures etc.
                  * for the full list, see https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.istandaloneeditorconstructionoptions.html
                  */
