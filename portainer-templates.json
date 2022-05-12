@@ -1,0 +1,29 @@
+{
+  "version": "2",
+  "templates": [
+    {
+	"type": 3,
+      "title": "IoT Open Node-RED",
+      "description": "Node-RED with iotopen additions",
+      "categories": ["education"],
+      "platform": "linux",
+      "logo": "https://aws1.discourse-cdn.com/business6/uploads/nodered/original/1X/778549404735e222c89ce5449482a189ace8cdae.png",
+      "env": [
+        {
+          "name": "NAME",
+	  "description": "Will be part of the URL to the instance. E.g. group1 will be https://hostname/group1",
+          "label": "Path (e.g. group1)"
+        },
+        {
+          "name": "ADMIN_PASSWORD",
+          "label": "Admin user password",
+	  "description": "The password for the user admin"
+        }
+      ],
+        "repository": {
+		"url": "https://github.com/iotopen/node-red",
+    		"stackfile": "portainer-compose.yml"
+  	}
+    }
+  ]
+}
