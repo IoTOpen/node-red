@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.6.1
+    ports:
+    - "80:80"
+    volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+    command:
+    - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+    - "--providers.docker.exposedByDefault=false"
+    - "--providers.docker.watch=true"
+  nodeRed:
+    image: ghcr.io/iotopen/node-red:latest
+    environment:
+    - "ADMIN_PASSWORD=test"
+    - "ROOT_PATH=/${NAME}"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.${NAME}.rule=PathPrefix(`/${NAME}`)"
+    - "traefik.http.services.${NAME}.loadbalancer.server.port=1880"
