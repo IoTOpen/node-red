@@ -1,0 +1,11 @@
+version: "2"
+services:
+  nodeRed:
+    image: ghcr.io/iotopen/node-red:latest
+    environment:
+    - "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
+    - "ROOT_PATH=/${NAME}"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.${NAME}.rule=PathPrefix(`/${NAME}`)"
+    - "traefik.http.services.${NAME}.loadbalancer.server.port=1880"
