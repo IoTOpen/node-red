@@ -1,6 +1,7 @@
 version: "2"
 services:
   nodeRed:
+    network_mode: bridge
     image: ghcr.io/iotopen/node-red:latest
     environment:
     - "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
