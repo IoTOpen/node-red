@@ -31,3 +31,5 @@ request.on('error', function(err) {
     process.exit(1);
 });
 
+request.end();
+
