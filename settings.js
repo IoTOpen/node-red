@@ -34,11 +34,24 @@ const LYNX_URL = process.env.LYNX_URL;
 const tokensFn = (token) => {
 	return new Promise((resolve) => {
 		const client = new lynx.LynxClient(LYNX_URL, token);
+		let user = null;
+		let permissions = [];
 		client.getMe().then((me) => {
-				resolve({username:me.email, permissions: "*"});
-			})
-		.catch((e) =>{
+			user = me;
+			return client.getPermissions();
+		}).then((perms) => {
+			permissions = Object.keys(perms)
+				.filter(k => k.startsWith("external/node-red/"))
+				.map(k => k.replace("external/node-red/", ""));
+			if (permissions.length === 0) throw "NOPE";
+		}).catch((e) =>{
 			resolve(null);
+		}).finally(() => {
+			if(user === null){
+				resolve(null);
+			} else {
+				resolve({username: user.email, permissions:permissions});
+			}
 		});
 	});
 };
@@ -49,18 +62,15 @@ const authFn = (username, password) => {
 		let xtoken = ""
 		let user = null;
 		client.login(username, password).then(token => {
-			console.log(token);
 			xtoken = token.token;
 			return tokensFn(xtoken);
 		}).then(me => {
-			console.log(me);
 			user = me;
 		}).then(() => {
 			return new lynx.LynxClient(LYNX_URL, xtoken).logout();
 		}).catch((e) => {
 			console.log(e);
 		}).finally(() => {
-			console.log("yay", user);
 			resolve(user);
 		});
 	});
