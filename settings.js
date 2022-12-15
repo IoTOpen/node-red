@@ -25,23 +25,71 @@ const bcrypt = require("bcrypt");
 const root = process.env.ROOT_PATH ? process.env.ROOT_PATH:"/";
 const editorTheme = process.env.EDITOR_THEME;
 const codeEditorTheme = process.env.CODE_EDITOR_THEME;
+const fetch = require("node-fetch");
+const lynx = require("@iotopen/node-lynx");
 
+globalThis.fetch = fetch;
 
-let adminAuth;
+const LYNX_URL = process.env.LYNX_URL;
+const tokensFn = (token) => {
+	return new Promise((resolve) => {
+		const client = new lynx.LynxClient(LYNX_URL, token);
+		client.getMe().then((me) => {
+				resolve({username:me.email, permissions: "*"});
+			})
+		.catch((e) =>{
+			resolve(null);
+		});
+	});
+};
+
+const authFn = (username, password) => {
+	return new Promise((resolve) => {
+		const client = new lynx.LynxClient(LYNX_URL);
+		let xtoken = ""
+		let user = null;
+		client.login(username, password).then(token => {
+			console.log(token);
+			xtoken = token.token;
+			return tokensFn(xtoken);
+		}).then(me => {
+			console.log(me);
+			user = me;
+		}).then(() => {
+			return new lynx.LynxClient(LYNX_URL, xtoken).logout();
+		}).catch((e) => {
+			console.log(e);
+		}).finally(() => {
+			console.log("yay", user);
+			resolve(user);
+		});
+	});
+};
+
+const usersFn = (username) => {
+	return new Promise(resolve => {
+		resolve({username:username, permissions:"*"});
+	});
+};
+
+const adminAuth = {
+	type: "credentials"
+}
 
 if (process.env.ADMIN_PASSWORD !== undefined) {
 	const password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
-
-	adminAuth =  {
-		type: "credentials",
-		users: [{
+	adminAuth.users = [{
 			username: "admin",
 			password: password,
 			permissions: "*"
-	        }]
-	};
+	        }];
+}
 
-	
+if (LYNX_URL !== undefined) {
+	console.log("ENABLING Lynx Auth integration");
+	adminAuth.users = usersFn;
+	adminAuth.tokens = tokensFn;
+	adminAuth.authenticate = authFn;
 }
 
 module.exports = {
