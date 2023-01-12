@@ -25,6 +25,7 @@ const bcrypt = require("bcrypt");
 const root = process.env.ROOT_PATH ? process.env.ROOT_PATH:"/";
 const editorTheme = process.env.EDITOR_THEME;
 const codeEditorTheme = process.env.CODE_EDITOR_THEME;
+const requiredInstallation = process.env.REQUIRED_INSTALLATION;
 const fetch = require("node-fetch");
 const lynx = require("@iotopen/node-lynx");
 
@@ -44,6 +45,11 @@ const tokensFn = (token) => {
 				.filter(k => k.startsWith("external/node-red/"))
 				.map(k => k.replace("external/node-red/", ""));
 			if (permissions.length === 0) throw "NOPE";
+			if (requiredInstallation && requiredInstallation.length > 0 ) {
+				if ( !user.assigned_installations.includes(Number(requiredInstallation)) ) { 
+					throw "NOPE";
+				}
+			}
 		}).catch((e) =>{
 			resolve(null);
 		}).finally(() => {

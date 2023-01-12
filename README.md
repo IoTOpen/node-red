@@ -7,10 +7,16 @@ IoT Open Node-RED
 * ROOT_PATH
 * EDITOR_THEME
 * CODE_EDITOR_THEME
+* LYNX_URL (optional)
+* REQUIRED_INSTALLATION (optional)
 
 available `EDITOR_THEME` can befound [here](https://github.com/node-red-contrib-themes/theme-collection)
 
 available `CODE_EDITOR_THEME` can be found [here](https://github.com/node-red/node-red/tree/master/packages/node_modules/%40node-red/editor-client/src/vendor/monaco/dist/theme)
+
+If the LYNX_URL is set the Lynx platform is used as backend for authentication. The admin password is then not used.
+
+If the REQUIRED_INSTALLATION is set only accounds associated with that installation can log in.
 
 # Portainer assets
 
