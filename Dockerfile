@@ -1,7 +1,8 @@
 FROM nodered/node-red:4.0.3
 RUN npm i @iotopen/node-red-contrib-lynx && \
     npm i @node-red-contrib-themes/theme-collection && \
-    npm i @iotopen/node-lynx
+    npm i @iotopen/node-lynx && \
+    npm i bcrypt
 ADD settings.js /settings.js
 ADD healthcheck.js /healthcheck.js
 

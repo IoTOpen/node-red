@@ -88,7 +88,7 @@ const usersFn = (username) => {
 	});
 };
 
-const adminAuth = {
+let adminAuth = {
 	type: "credentials"
 }
 
@@ -106,6 +106,10 @@ if (LYNX_URL !== undefined) {
 	adminAuth.users = usersFn;
 	adminAuth.tokens = tokensFn;
 	adminAuth.authenticate = authFn;
+}
+
+if(LYNX_URL === undefined && process.env.ADMIN_PASSWORD === undefined) {
+	adminAuth = undefined
 }
 
 module.exports = {
@@ -331,7 +335,7 @@ module.exports = {
               * trace - record very detailed logging + debug + info + warn + error + fatal errors
               * off - turn off all logging (doesn't affect metrics or audit)
               */
-             level: "info",
+             level: "debug",
              /** Whether or not to include metric events in the log output */
              metrics: false,
              /** Whether or not to include audit events in the log output */
