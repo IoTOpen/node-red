@@ -1,4 +1,4 @@
-FROM nodered/node-red:4.1.2
+FROM nodered/node-red:4.1.6
 RUN npm i @iotopen/node-red-contrib-lynx && \
     npm i @node-red-contrib-themes/theme-collection && \
     npm i @iotopen/node-lynx && \
