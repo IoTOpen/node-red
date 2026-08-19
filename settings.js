@@ -26,10 +26,7 @@ const root = process.env.ROOT_PATH ? process.env.ROOT_PATH:"/";
 const editorTheme = process.env.EDITOR_THEME;
 const codeEditorTheme = process.env.CODE_EDITOR_THEME;
 const requiredInstallation = process.env.REQUIRED_INSTALLATION;
-const fetch = require("node-fetch");
 const lynx = require("@iotopen/node-lynx");
-
-globalThis.fetch = fetch;
 
 const LYNX_URL = process.env.LYNX_URL;
 const tokensFn = (token) => {
